@@ -90,15 +90,41 @@ void getValidMoves(GameModel &model, Moves &validMoves)
 {
     // To-do: your code goes here...
 
+    std::vector<Square> borders = { {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
+    int currentPlayer = getCurrentPlayer(model);
+    int currentOpponent = (currentPlayer == PIECE_WHITE)? PIECE_BLACK : PIECE_WHITE;
+
     for (int y = 0; y < BOARD_SIZE; y++)
         for (int x = 0; x < BOARD_SIZE; x++)
         {
             Square move = {x, y};
-
+           
             // +++ TEST
             // Lists all empty squares...
             if (getBoardPiece(model, move) == PIECE_EMPTY)
-                validMoves.push_back(move);
+            {
+                for (auto &direction: borders)//iterates through adjacent places
+                {
+                    Square adjacentSpot = {x + direction.x, y + direction.y};
+
+                    if(!isSquareValid(adjacentSpot))//checks if the adjacent spot is in bounds or not
+                    {
+                        // skip to next iteration
+                    } 
+                    else if (getBoardPiece(model, adjacentSpot) == currentOpponent) //if an opponent piece is adjacent
+                    {
+                        while(isSquareValid(adjacentSpot)) //search for a player piece in the direction that it was found
+                        {
+                            adjacentSpot.x += adjacentSpot.x; 
+                            adjacentSpot.y += adjacentSpot.y;
+
+                            if(getBoardPiece(model, adjacentSpot) == currentPlayer)
+                            validMoves.push_back(move); 
+                        }
+                    }
+                }
+               
+            }
             // --- TEST
         }
 }
