@@ -9,6 +9,8 @@
 
 #include "raylib.h"
 
+#include <cmath>
+
 #include "controller.h"
 #include "model.h"
 

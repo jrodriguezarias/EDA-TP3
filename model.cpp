@@ -6,7 +6,7 @@
  */
 
 #include "raylib.h"
-
+#include <cstring>
 #include "model.h"
 
 void initModel(GameModel &model)
