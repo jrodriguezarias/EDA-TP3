@@ -102,26 +102,28 @@ void getValidMoves(GameModel &model, Moves &validMoves)
             // Lists all empty squares...
             if (getBoardPiece(model, move) == PIECE_EMPTY)
             {
-                for (auto &direction: borders)//iterates through adjacent places
+                bool pieceFound = false; //flag that tracks if another piece has been found in one of the valid directions order to validate the move
+
+                for (auto &direction: borders) //iterates through adjacent places
                 {
                     Square adjacentSpot = {x + direction.x, y + direction.y};
 
-                    if(!isSquareValid(adjacentSpot))//checks if the adjacent spot is in bounds or not
+                    if(!isSquareValid(adjacentSpot)) //checks if the adjacent spot is in bounds or not
                     {
                         // skip to next iteration
                     } 
                     else if (getBoardPiece(model, adjacentSpot) == currentOpponent) //if an opponent piece is adjacent
                     {
 
-                        bool pieceFound = false;
+                       
 
-                        while(isSquareValid(adjacentSpot) && (getBoardPiece(model,adjacentSpot) != PIECE_EMPTY) && !pieceFound)//search for a player piece in the direction that it was found
+                        while((getBoardPiece(model,adjacentSpot) != PIECE_EMPTY) && !pieceFound) //search for a player piece in the direction that it was found
                         {
                             adjacentSpot.x += direction.x;
                             adjacentSpot.y += direction.y;
 
                          
-                            if((getBoardPiece(model, adjacentSpot) == currentPlayer))  {
+                            if((getBoardPiece(model, adjacentSpot) == currentPlayer && !pieceFound))  {
                                 validMoves.push_back(move);
                                 pieceFound = true;
                             }
