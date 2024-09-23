@@ -113,13 +113,21 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                     } 
                     else if (getBoardPiece(model, adjacentSpot) == currentOpponent) //if an opponent piece is adjacent
                     {
-                        while(isSquareValid(adjacentSpot)) //search for a player piece in the direction that it was found
+                        bool flag = false;
+                        int opponentCount = 0;
+                        while(isSquareValid(adjacentSpot) && (getBoardPiece(model,adjacentSpot)!=PIECE_EMPTY) && !flag)//search for a player piece in the direction that it was found
                         {
-                            adjacentSpot.x += adjacentSpot.x; 
-                            adjacentSpot.y += adjacentSpot.y;
+                            adjacentSpot.x += direction.x;
+                            adjacentSpot.y += direction.y;
 
-                            if(getBoardPiece(model, adjacentSpot) == currentPlayer)
-                            validMoves.push_back(move); 
+                            if((getBoardPiece(model, adjacentSpot) == currentPlayer) && (opponentCount > 0))  {
+                                validMoves.push_back(move);
+                                flag = true;
+                            }
+                            else {
+                                opponentCount++;
+                            }
+
                         }
                     }
                 }
