@@ -91,8 +91,8 @@ void getValidMoves(GameModel &model, Moves &validMoves)
     // To-do: your code goes here...
 
     std::vector<Square> borders = { {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
-    int currentPlayer = getCurrentPlayer(model);
-    int currentOpponent = (currentPlayer == PIECE_WHITE)? PIECE_BLACK : PIECE_WHITE;
+    int currentPlayer = (getCurrentPlayer(model) == PLAYER_WHITE)? PIECE_WHITE : PIECE_BLACK;
+    int currentOpponent = (getCurrentPlayer(model) == PLAYER_WHITE)? PIECE_BLACK : PIECE_WHITE;
 
     for (int y = 0; y < BOARD_SIZE; y++)
         for (int x = 0; x < BOARD_SIZE; x++)
@@ -113,20 +113,19 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                     } 
                     else if (getBoardPiece(model, adjacentSpot) == currentOpponent) //if an opponent piece is adjacent
                     {
+
                         bool flag = false;
-                        int opponentCount = 0;
-                        while(isSquareValid(adjacentSpot) && (getBoardPiece(model,adjacentSpot)!=PIECE_EMPTY) && !flag)//search for a player piece in the direction that it was found
+
+                        while((getBoardPiece(model,adjacentSpot)!=PIECE_EMPTY) && !flag)//search for a player piece in the direction that it was found
                         {
                             adjacentSpot.x += direction.x;
                             adjacentSpot.y += direction.y;
 
-                            if((getBoardPiece(model, adjacentSpot) == currentPlayer) && (opponentCount > 0))  {
+                            if((getBoardPiece(model, adjacentSpot) == currentPlayer))  {
                                 validMoves.push_back(move);
                                 flag = true;
                             }
-                            else {
-                                opponentCount++;
-                            }
+
 
                         }
                     }
@@ -164,8 +163,21 @@ bool playMove(GameModel &model, Square move)
     Moves validMoves;
     getValidMoves(model, validMoves);
 
-    if (validMoves.size() == 0)
-        model.gameOver = true;
+    if (validMoves.size() == 0) {
+
+        //swap player
+        model.currentPlayer=
+            (model.currentPlayer == PLAYER_WHITE)
+                ? PLAYER_BLACK
+                : PLAYER_WHITE;
+
+        Moves validMoves;
+        getValidMoves(model, validMoves);
+        if(validMoves.size() == 0)
+            model.gameOver = true;
+    }
+
+
 
     return true;
 }
