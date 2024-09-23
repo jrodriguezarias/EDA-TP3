@@ -89,7 +89,7 @@ bool isSquareValid(Square square)
 void getValidMoves(GameModel &model, Moves &validMoves)
 {
 
-    std::vector<Square> borders = { {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
+    Square borders[8] = { {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
     int currentPlayer = (getCurrentPlayer(model) == PLAYER_WHITE)? PIECE_WHITE : PIECE_BLACK;
     int currentOpponent = (getCurrentPlayer(model) == PLAYER_WHITE)? PIECE_BLACK : PIECE_WHITE;
 
@@ -98,8 +98,6 @@ void getValidMoves(GameModel &model, Moves &validMoves)
         {
             Square move = {x, y};
            
-            // +++ TEST
-            // Lists all empty squares...
             if (getBoardPiece(model, move) == PIECE_EMPTY)
             {
                 bool pieceFound = false; //flag that tracks if another piece has been found in one of the valid directions order to validate the move
@@ -113,7 +111,7 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                     {
 
 
-                        while(isSquareValid(adjacentSpot) && (getBoardPiece(model,adjacentSpot) != PIECE_EMPTY)) //search for a player piece in the direction that it was found
+                        while(isSquareValid(adjacentSpot) && (getBoardPiece(model, adjacentSpot) != PIECE_EMPTY)) //search for a player piece in the direction that it was found
                         {
                             adjacentSpot.x += direction.x;
                             adjacentSpot.y += direction.y;
@@ -133,9 +131,7 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                     if(pieceFound)
                         break;
                 }
-               
             }
-            // --- TEST
         }
 }
 
@@ -146,11 +142,52 @@ bool playMove(GameModel &model, Square move)
         (getCurrentPlayer(model) == PLAYER_WHITE)
             ? PIECE_WHITE
             : PIECE_BLACK;
+    
+    Piece currentOpponent =
+        (getCurrentPlayer(model) == PLAYER_WHITE)
+            ? PIECE_BLACK
+            : PIECE_WHITE;
 
     setBoardPiece(model, move, piece);
 
     // To-do: your code goes here...
 
+    Square borders[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
+    
+    for (auto &direction: borders)
+    {
+        Square adjacentSpot = {move.x + direction.x, move.y + direction.y};
+        if (getBoardPiece(model, adjacentSpot) == currentOpponent 
+            && isSquareValid(adjacentSpot)) //if an opponent piece is adjacent
+        {
+
+            while(isSquareValid(adjacentSpot) && (getBoardPiece(model, adjacentSpot) != PIECE_EMPTY)) 
+            //search for a player piece in the direction that it was found
+            {
+                adjacentSpot.x += direction.x;
+                adjacentSpot.y += direction.y;
+
+                if(getBoardPiece(model, adjacentSpot) == piece)//encontre una pieza de mi tipo)
+                {
+                    //agarro todas las piezas en el medio y las doy vuelta
+                    
+                    for (int i = 1; adjacentSpot.x != move.x && adjacentSpot.y != move.y; i++)
+                    {
+                        adjacentSpot.x -= direction.x * i;
+                        adjacentSpot.y -= direction.y * i;
+                        setBoardPiece(model, adjacentSpot, piece);
+                    }
+                    break;
+                }
+            }
+        }
+        
+    }
+
+
+
+    
+    
     // Update timer
     double currentTime = GetTime();
     model.playerTime[model.currentPlayer] += currentTime - model.turnTimer;
