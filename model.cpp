@@ -88,7 +88,6 @@ bool isSquareValid(Square square)
 
 void getValidMoves(GameModel &model, Moves &validMoves)
 {
-    // To-do: your code goes here...
 
     std::vector<Square> borders = { {1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
     int currentPlayer = (getCurrentPlayer(model) == PLAYER_WHITE)? PIECE_WHITE : PIECE_BLACK;
@@ -114,16 +113,17 @@ void getValidMoves(GameModel &model, Moves &validMoves)
                     else if (getBoardPiece(model, adjacentSpot) == currentOpponent) //if an opponent piece is adjacent
                     {
 
-                        bool flag = false;
+                        bool pieceFound = false;
 
-                        while((getBoardPiece(model,adjacentSpot)!=PIECE_EMPTY) && !flag)//search for a player piece in the direction that it was found
+                        while(isSquareValid(adjacentSpot) && (getBoardPiece(model,adjacentSpot) != PIECE_EMPTY) && !pieceFound)//search for a player piece in the direction that it was found
                         {
                             adjacentSpot.x += direction.x;
                             adjacentSpot.y += direction.y;
 
+                         
                             if((getBoardPiece(model, adjacentSpot) == currentPlayer))  {
                                 validMoves.push_back(move);
-                                flag = true;
+                                pieceFound = true;
                             }
 
 
