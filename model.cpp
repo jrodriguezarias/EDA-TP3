@@ -170,11 +170,11 @@ bool playMove(GameModel &model, Square move)
                 if(getBoardPiece(model, adjacentSpot) == piece)//encontre una pieza de mi tipo)
                 {
                     //agarro todas las piezas en el medio y las doy vuelta
-                    
-                    for (int i = 1; adjacentSpot.x != move.x && adjacentSpot.y != move.y; i++)
+
+                    while(adjacentSpot.x != move.x || adjacentSpot.y != move.y)
                     {
-                        adjacentSpot.x -= direction.x * i;
-                        adjacentSpot.y -= direction.y * i;
+                        adjacentSpot.x -= direction.x;
+                        adjacentSpot.y -= direction.y;
                         setBoardPiece(model, adjacentSpot, piece);
                     }
                     break;
