@@ -167,11 +167,9 @@ bool playMove(GameModel &model, Square move)
                 adjacentSpot.x += direction.x;
                 adjacentSpot.y += direction.y;
 
-                if(getBoardPiece(model, adjacentSpot) == piece)//encontre una pieza de mi tipo)
+                if(getBoardPiece(model, adjacentSpot) == piece)
                 {
-                    //agarro todas las piezas en el medio y las doy vuelta
-
-                    while(adjacentSpot.x != move.x || adjacentSpot.y != move.y)
+                    while(adjacentSpot.x != move.x || adjacentSpot.y != move.y) //iterates back to the move position flipping the pieces in its path
                     {
                         adjacentSpot.x -= direction.x;
                         adjacentSpot.y -= direction.y;
