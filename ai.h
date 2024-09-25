@@ -10,11 +10,16 @@
 
 #include "model.h"
 
+#define INF 1000000
+#define MAX_DEPTH 5
+
 /**
  * @brief Returns the best move for a certain position.
  *
  * @return The best move.
  */
 Square getBestMove(GameModel &model);
+
+int miniMax(GameModel model, int depth,int alpha, int beta, bool isMax);
 
 #endif
