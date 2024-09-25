@@ -10,7 +10,7 @@
 #include "ai.h"
 #include "controller.h"
 
-Square getBestMove(GameModel &model)
+Square getBestMove(GameModel &model, unsigned long int depth, int alpha, int beta, bool maxPlayer)
 {
     // To-do: your code goes here...
 
