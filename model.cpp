@@ -150,8 +150,6 @@ bool playMove(GameModel &model, Square move)
 
     setBoardPiece(model, move, piece);
 
-    // To-do: your code goes here...
-
     Square borders[8] = {{1,0}, {1,1}, {0,1}, {-1,1}, {-1,0}, {-1,-1}, {0,-1}, {1,-1}};
     
     for (auto &direction: borders)
