@@ -11,7 +11,7 @@
 #include "model.h"
 
 #define INF 1000000
-#define MAX_NODES 10
+#define MAX_DEPTH 10
 
 /**
  * @brief Returns the best move for a certain position.

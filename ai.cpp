@@ -18,7 +18,7 @@ Square getBestMove(GameModel &model)
     Moves validMoves;
     getValidMoves(model, validMoves);
 
-    int index = miniMax(model, MAX_NODES,  -INF, INF, true);
+    int index = miniMax(model, MAX_DEPTH, -INF, INF, true);
     return validMoves[index];
 
     /*
@@ -35,14 +35,15 @@ Square getBestMove(GameModel &model)
 }
 
 
-int miniMax(GameModel model, int nodeLimit, int alpha, int beta, bool isMax) {
+int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
     static int nodes = 0;
     Moves validMoves;
     getValidMoves(model, validMoves);
     Player currentPlayer = (getCurrentPlayer(model) == PLAYER_WHITE)? PLAYER_WHITE : PLAYER_BLACK;
     int index; // index of the best move according to the algorithm
     GameModel tempModel = model;
-    if(nodes == nodeLimit){
+
+    if(depth == 0){
         return getScore(model, currentPlayer);
     }
 
@@ -58,8 +59,7 @@ int miniMax(GameModel model, int nodeLimit, int alpha, int beta, bool isMax) {
             if(tempModel.gameOver) {
                 return getScore(model, currentPlayer);
             }
-            nodes++;
-            int value = miniMax(model, nodeLimit, alpha, beta, !isMax);
+            int value = miniMax(model, depth - 1, alpha, beta, !isMax);
             max = ((max <  value) ? value : max);
             alpha = (alpha < max) ? max : alpha;
             if(beta <= alpha) {
@@ -68,7 +68,7 @@ int miniMax(GameModel model, int nodeLimit, int alpha, int beta, bool isMax) {
 
         }
 
-        if( nodes == nodeLimit) { // inmmediate next move
+        if(depth = MAX_DEPTH) { // inmmediate next move
             return i - 1;
         }
         return max;
@@ -80,7 +80,7 @@ int miniMax(GameModel model, int nodeLimit, int alpha, int beta, bool isMax) {
             tempModel = model;
             playMove(tempModel, validMoves[i]);
             nodes++;
-            int value = miniMax(tempModel, nodeLimit, alpha, beta, !isMax);
+            int value = miniMax(tempModel, depth - 1, alpha, beta, !isMax);
             min = ((min >  value) ? value : min);
             beta = (beta > min) ? min : beta;
             if(beta <= alpha) {
