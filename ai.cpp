@@ -37,15 +37,16 @@ Square getBestMove(GameModel &model)
 
 int miniMax(GameModel model, int depth,int alpha, int beta, bool isMax) {
 
+    Moves validMoves;
+    getValidMoves(model, validMoves);
     Player currentPlayer = (getCurrentPlayer(model) == PLAYER_WHITE)? PLAYER_WHITE : PLAYER_BLACK;
     int index; // index of the best move according to the algorithm
     GameModel tempModel = model;
-    if(depth == 0) {
+    if(depth == 0){
         return getScore(model, currentPlayer);
     }
-    Moves validMoves;
-    getValidMoves(model, validMoves);
-    int thisScore;
+
+
     int i;
     if(isMax) {
         long int max = -INF;
@@ -54,6 +55,9 @@ int miniMax(GameModel model, int depth,int alpha, int beta, bool isMax) {
         for(i = 0; i < validMoves.size(); i++) {
             tempModel = model;
             playMove(tempModel, validMoves[i]);
+            if(tempModel.gameOver) {
+                return getScore(model, currentPlayer);
+            }
             int value = miniMax(model, depth - 1, alpha, beta, !isMax);
             max = ((max <  value) ? value : max);
             alpha = (alpha < max) ? max : alpha;
@@ -62,6 +66,7 @@ int miniMax(GameModel model, int depth,int alpha, int beta, bool isMax) {
             }
 
         }
+
         if(depth == MAX_DEPTH) { // inmmediate next move
             return i - 1;
         }
