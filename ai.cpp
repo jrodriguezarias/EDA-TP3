@@ -23,20 +23,7 @@ Square getBestMove(GameModel &model)
     getValidMoves(model, validMoves);
 
     int index = miniMax(model, MAX_DEPTH, -INF, INF, true);
-    std::cout << index << std::endl;
     return validMoves[index];
-
-    /*
-    // +++ TEST
-    // Returns a random valid move...
-
-    Moves validMoves;
-    getValidMoves(model, validMoves);
-
-    int index = rand() % validMoves.size();
-    return validMoves[index];
-    // --- TEST
-    */
 }
 
 
@@ -48,9 +35,9 @@ int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
 
     Moves validMoves;
     getValidMoves(model, validMoves);
+    int validMovesSize = validMoves.size();
     
     Player currentPlayer = (getCurrentPlayer(model) == PLAYER_WHITE)? PLAYER_WHITE : PLAYER_BLACK;
-    int index; // index of the best move according to the algorithm
     GameModel tempModel = model; // model used for looking into future moves without disrupting the ongoing game
 
     if(depth == 0 || model.gameOver || nodes == MAX_NODES){ // Heuristic evaluation 
@@ -63,7 +50,7 @@ int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
         long int max = -INF;
 
 
-        for(i = 0; i < (validMoves.size() - 1) && nodes < MAX_NODES; i++) {
+        for(i = 0; i < (validMovesSize - 1) && nodes < MAX_NODES; i++) {
             tempModel = model;
             playMove(tempModel, validMoves[i]);
 
@@ -75,7 +62,6 @@ int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
              ******************************/
             alpha = (alpha < max) ? max : alpha;
             if(beta <= alpha) {
-                std::cout << "alpha prune" << std::endl;
                 break; // alpha pruning
             }
 
@@ -91,7 +77,7 @@ int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
     }
     else { // minmizing player
         long int min = INF;
-        for(int i = 0; i < (validMoves.size() - 1) && nodes < MAX_NODES; i++) {
+        for(int i = 0; i < (validMovesSize - 1) && nodes < MAX_NODES; i++) {
             tempModel = model;
             playMove(tempModel, validMoves[i]);
 
@@ -103,7 +89,6 @@ int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
              ******************************/
             beta = (beta > min) ? min : beta;
             if(alpha >= beta) {
-                std::cout << "beta prune" << std::endl;
                 break; // beta pruning
             }
 
