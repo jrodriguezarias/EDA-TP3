@@ -11,8 +11,13 @@
 #include "model.h"
 
 #define INF 1000000
-#define MAX_DEPTH 15
-#define MAX_NODES 30000
+#define MAX_NODES 1000000
+
+#define MAX_DEPTH 16
+// Arbitrary value that allows for the decision tree to be approximately 1000000 nodes in size. 
+// Estimated as 2 * base 6 (the average amount of validMoves for any given moment) logarithm of the node count rounded up to the nearest integer.
+// This value was experimentally calculated to be a good estimate.
+
 
 /**
  * @brief Returns the best move for a certain position.
