@@ -43,8 +43,10 @@ Square getBestMove(GameModel &model)
 int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
     static int nodes;
     nodes++;
+
     Moves validMoves;
     getValidMoves(model, validMoves);
+    
     Player currentPlayer = (getCurrentPlayer(model) == PLAYER_WHITE)? PLAYER_WHITE : PLAYER_BLACK;
     int index; // index of the best move according to the algorithm
     GameModel tempModel = model;
