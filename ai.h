@@ -13,10 +13,9 @@
 #define INF 1000000
 #define MAX_NODES 1000000
 
+//Arbitrary value that was experimentally found to be the most efficient for 1000000 nodes. Might need to be modified if the node count is modified
 #define MAX_DEPTH 12
-// Arbitrary value that allows for the decision tree to be approximately 1000000 nodes in size. 
-// Estimated as 2 * base 6 (the average amount of validMoves for any given moment) logarithm of the node count rounded up to the nearest integer.
-// This value was experimentally calculated to be a good estimate.
+
 
 
 /**

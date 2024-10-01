@@ -19,9 +19,11 @@ Esto fue implementado mediante llamadas recursivas donde se utilizó una copia d
 
 ## Parte 3: Poda del árbol
 
-Debido al alto numero de posiciones del tablero futuras que puede haber, en especial al comienzo de la partida, el algoritmo debe evaluar una cantidad muy alta de situaciones. Para el tablero utilizado de 64 posiciones, puede haber un maximo de 33 movimientos validos cada turno. Como cada uno de estos movimientos implica una nueva posicion (o nodo) para evaluar, la complejidad computacional aumenta de forma exponencial. Por lo tanto, se puede tomar O(33**n) como cota superior del calculo computacional.
+Debido al alto numero de posiciones del tablero futuras que puede haber, en especial al comienzo de la partida, el algoritmo debe evaluar una cantidad muy alta de situaciones. Para el tablero utilizado de 64 posiciones, puede haber un maximo de 33 movimientos validos cada turno. Como cada uno de estos movimientos implica una nueva posicion (o nodo) para evaluar, la complejidad computacional aumenta de forma exponencial. 
 
 Como consecuencia, es funcionalmente imposible evaluar el arbol entero y es necesario limitar o bien la cantidad de posiciones (o nodos) que pueden evaluarse, o bien la profundidad (es decir, la cantidad de movimientos hacia adelante) que el algoritmo explora. Debido a que utilizamos busqueda DFS, utilizamos ambos tipos de limitaciones para podar el arbol asi no se consumen todos los nodos sin poder haber recorrido el arbol de forma pareja (es decir, que no se utilicen todos los nodos permitidos en los hijos de un mismo nodo padre sino que se evaluen tambien los hijos de los nodos hermanos al nodo padre en cuestion).
+
+Debido a que utilizamos DFS para recorrer el arbol, decidimos limitar la profundidad ya que, al ser un requisito limitar la cantidad de nodos, quisimos limitar la profundidad para permitir que el arbol sea recorrido de la forma mas pareja posible y evitar que la gran mayoria de los nodos evaluados vayan a analizar una subrama del arbol profundamente, dejando otras subramas sin analizar.
  
 ## Documentación adicional
 
