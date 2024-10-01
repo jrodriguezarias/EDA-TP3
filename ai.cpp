@@ -54,7 +54,7 @@ int miniMax(GameModel model, int depth, int alpha, int beta, bool isMax) {
             tempModel = model;
             playMove(tempModel, validMoves[i]);
 
-            int value = miniMax(model, depth - 1, alpha, beta, !isMax);//recursive call
+            int value = miniMax(tempModel, depth - 1, alpha, beta, !isMax);//recursive call
             max = ((max <  value) ? value : max);
 
             /******************************
